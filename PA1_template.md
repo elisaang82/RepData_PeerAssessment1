@@ -96,4 +96,27 @@ Comparison of medians :
  (a) Part one omitting NAs : 10765  
  (b) Filled in missing values : 10762  
  Difference (a - b) = 3
+ 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+Create new factor variable with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
+
+```r
+library(lubridate)
+new_data$weekday <- as.factor(ifelse(weekdays(ymd(new_data$date)) %in% c("Saturday", "Sunday"), "Weekend","Weekday"))
+```
+
+Aggregate the steps by weekday and intervals
+
+```r
+new_grpbyinterval_weekday <- aggregate(steps ~ interval + weekday, data = new_data, sum)
+```
+
+Plot line chart
+
+```r
+qplot(x = interval, y = steps, data = new_grpbyinterval_weekday, facets = weekday ~ . , geom = "line", main="Average daily activity pattern", xlab = "Interval", ylab = "Average number of steps taken")
+```
+
+![plot of chunk unnamed-chunk-12](PA1_template_files/figure-html/unnamed-chunk-12.png) 
+
